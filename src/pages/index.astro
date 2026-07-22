@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title="Nicholas Nazario">
@@ -11,8 +12,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         to music.
       </p>
       <div class="links">
-        <a class="primary-link" href="/blog">Read the blog <span>→</span></a>
-        <a href="/photos">Browse the photos <span>→</span></a>
+        <a class="primary-link" href={`${base}blog`}>Read the blog <span>→</span></a>
+        <a href={`${base}photos`}>Browse the photos <span>→</span></a>
       </div>
     </div>
     <div class="hero-art" aria-label="An abstract moon over a lush horizon" role="img">

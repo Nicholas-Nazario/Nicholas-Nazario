@@ -10,11 +10,13 @@ export function getStaticPaths() {
 }
 
 const { collection } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const photoUrl = (photo: string) => `${base}${photo}`;
 ---
 
 <BaseLayout title={`${collection.title} · Photos · Nicholas Nazario`}>
   <section class="collection-heading">
-    <a class="back-link" href="/photos">← All collections</a>
+    <a class="back-link" href={`${base}photos`}>← All collections</a>
     <p class="eyebrow">{collection.number}</p>
     <h1>{collection.title}</h1>
     <p>{collection.description}</p>
@@ -24,13 +26,13 @@ const { collection } = Astro.props;
     {collection.photos.map((photo, index) => (
       <figure>
         <button class="photo-button" type="button" data-photo-index={index} aria-label={`View ${collection.title} photograph ${index + 1}`}>
-          <img src={photo} alt={`${collection.title} photograph ${index + 1}`} loading={index < 3 ? "eager" : "lazy"} />
+          <img src={photoUrl(photo)} alt={`${collection.title} photograph ${index + 1}`} loading={index < 3 ? "eager" : "lazy"} />
         </button>
       </figure>
     ))}
   </section>
 
-  <dialog id="photo-viewer" class="photo-viewer" data-photos={JSON.stringify(collection.photos)} aria-labelledby="viewer-label">
+  <dialog id="photo-viewer" class="photo-viewer" data-base={base} data-photos={JSON.stringify(collection.photos)} aria-labelledby="viewer-label">
     <div class="viewer-shell">
       <div class="viewer-toolbar">
         <p id="viewer-label">{collection.title}</p>
@@ -39,7 +41,7 @@ const { collection } = Astro.props;
       </div>
       <div class="viewer-stage">
         <button id="viewer-previous" class="viewer-arrow" type="button" aria-label="Previous photo">←</button>
-        <img id="viewer-image" src={collection.photos[0]} alt="" />
+        <img id="viewer-image" src={photoUrl(collection.photos[0])} alt="" />
         <button id="viewer-next" class="viewer-arrow" type="button" aria-label="Next photo">→</button>
       </div>
     </div>
@@ -55,12 +57,13 @@ const { collection } = Astro.props;
   const nextButton = document.querySelector("#viewer-next");
 
   if (viewer instanceof HTMLDialogElement && viewerImage instanceof HTMLImageElement && viewerCounter instanceof HTMLElement && closeButton instanceof HTMLButtonElement && previousButton instanceof HTMLButtonElement && nextButton instanceof HTMLButtonElement) {
+    const baseUrl = viewer.dataset.base || "/";
     const photos = JSON.parse(viewer.dataset.photos || "[]");
     let currentIndex = 0;
 
     const showPhoto = (index: number) => {
       currentIndex = (index + photos.length) % photos.length;
-      viewerImage.src = photos[currentIndex];
+      viewerImage.src = `${baseUrl}${photos[currentIndex]}`;
       viewerImage.alt = `Photo ${currentIndex + 1} of ${photos.length}`;
       viewerCounter.textContent = `${currentIndex + 1} / ${photos.length}`;
       previousButton.disabled = photos.length < 2;

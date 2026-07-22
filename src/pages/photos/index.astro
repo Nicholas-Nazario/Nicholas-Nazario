@@ -3,6 +3,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { photoCollections } from "../../data/photoCollections";
 
 const [birds, argusC4] = photoCollections;
+const base = import.meta.env.BASE_URL;
+const photoUrl = (photo: string) => `${base}${photo}`;
 ---
 
 <BaseLayout title="Photos · Nicholas Nazario">
@@ -18,11 +20,11 @@ const [birds, argusC4] = photoCollections;
     </div>
 
     <div class="collection-grid">
-      <a class="collection-card birds" href={`/photos/${birds.slug}`} aria-labelledby="birds-heading">
+      <a class="collection-card birds" href={`${base}photos/${birds.slug}`} aria-labelledby="birds-heading">
         <div class="collection-art" aria-hidden="true">
           {birds.photos.length > 0 && (
             <div class="collection-collage">
-              {birds.photos.slice(0, 3).map((photo) => <img src={photo} alt="" loading="lazy" />)}
+              {birds.photos.slice(0, 3).map((photo) => <img src={photoUrl(photo)} alt="" loading="lazy" />)}
             </div>
           )}
           <span class="sun"></span>
@@ -40,11 +42,11 @@ const [birds, argusC4] = photoCollections;
         </div>
       </a>
 
-      <a class="collection-card argus-c4" href={`/photos/${argusC4.slug}`} aria-labelledby="argus-c4-heading">
+      <a class="collection-card argus-c4" href={`${base}photos/${argusC4.slug}`} aria-labelledby="argus-c4-heading">
         <div class="collection-art" aria-hidden="true">
           {argusC4.photos.length > 0 && (
             <div class="collection-collage">
-              {argusC4.photos.slice(0, 3).map((photo) => <img src={photo} alt="" loading="lazy" />)}
+              {argusC4.photos.slice(0, 3).map((photo) => <img src={photoUrl(photo)} alt="" loading="lazy" />)}
             </div>
           )}
           <span class="skyline skyline-back"></span>

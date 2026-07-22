@@ -8,6 +8,7 @@ const {
   title,
   description = "A personal site for writing, photography, and ideas.",
 } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
@@ -19,20 +20,20 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;600;700&family=Chicle&display=swap" rel="stylesheet" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
     <title>{title}</title>
   </head>
   <body>
     <div class="ambient ambient-one" aria-hidden="true"></div>
     <div class="ambient ambient-two" aria-hidden="true"></div>
     <header class="site-header">
-      <a class="site-name" href="/">
+      <a class="site-name" href={base}>
         <span class="site-mark" aria-hidden="true">✦</span>
         <span>Nicholas Nazario</span>
       </a>
       <nav aria-label="Main navigation">
-        <a href="/blog"><span>01</span> Blog</a>
-        <a href="/photos"><span>02</span> Photos</a>
+        <a href={`${base}blog`}><span>01</span> Blog</a>
+        <a href={`${base}photos`}><span>02</span> Photos</a>
       </nav>
     </header>
 
@@ -42,7 +43,7 @@ const {
 
     <footer class="site-footer">
       <p>© {new Date().getFullYear()} Nicholas Nazario</p>
-      <a href="/photos#license">Photo license</a>
+      <a href={`${base}photos#license`}>Photo license</a>
     </footer>
   </body>
 </html>
