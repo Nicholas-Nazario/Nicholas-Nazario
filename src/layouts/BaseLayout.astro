@@ -1,0 +1,99 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "A personal site for writing, photography, and ideas.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-name" href="/">Nicholas Nazario</a>
+      <nav aria-label="Main navigation">
+        <a href="/blog">Blog</a>
+        <a href="/photos">Photos</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>© {new Date().getFullYear()} Nicholas Nazario</p>
+      <a href="/photos#license">Photo license</a>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #22201d;
+    background: #f7f4ee;
+    font-synthesis: none;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    line-height: 1.6;
+  }
+
+  a { color: inherit; }
+
+  .site-header,
+  .site-footer {
+    width: min(100% - 3rem, 72rem);
+    margin-inline: auto;
+  }
+
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid #d8d0c4;
+  }
+
+  .site-name { font-weight: 700; text-decoration: none; }
+
+  nav { display: flex; gap: 1.25rem; }
+  nav a { text-decoration: none; }
+  nav a:hover { text-decoration: underline; }
+
+  main { width: min(100% - 3rem, 72rem); margin-inline: auto; }
+
+  .site-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 6rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid #d8d0c4;
+    color: #706a61;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 600px) {
+    .site-header,
+    .site-footer,
+    main { width: min(100% - 2rem, 72rem); }
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page not found · Nicholas Nazario">
+  <section class="not-found">
+    <p class="eyebrow">404</p>
+    <h1>That page wandered off.</h1>
+    <a href="/">Return home →</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found { max-width: 40rem; padding-block: 8rem; }
+  .eyebrow { color: #8d4b2d; font-weight: 700; letter-spacing: 0.12em; }
+  h1 { font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1; }
+</style>
