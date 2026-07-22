@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { photoCollections } from "../../data/photoCollections";
+
+export function getStaticPaths() {
+  return photoCollections.map((collection) => ({
+    params: { collection: collection.slug },
+    props: { collection },
+  }));
+}
+
+const { collection } = Astro.props;
+---
+
+<BaseLayout title={`${collection.title} · Photos · Nicholas Nazario`}>
+  <section class="collection-heading">
+    <a class="back-link" href="/photos">← All collections</a>
+    <p class="eyebrow">{collection.number}</p>
+    <h1>{collection.title}</h1>
+    <p>{collection.description}</p>
+  </section>
+
+  <section class="photo-grid" aria-label={`${collection.title} photographs`}>
+    {collection.photos.map((photo, index) => (
+      <figure>
+        <img src={photo} alt={`${collection.title} photograph ${index + 1}`} loading={index < 3 ? "eager" : "lazy"} />
+      </figure>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .collection-heading { max-width: 52rem; padding-block: clamp(4rem, 10vw, 7rem) 3rem; }
+  .back-link { display: inline-block; margin-bottom: 3rem; color: var(--sea); font-weight: 700; text-decoration: none; }
+  .back-link:hover { text-decoration: underline; }
+  .eyebrow { color: var(--terracotta); font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  h1 { margin: .6rem 0 .8rem; color: var(--forest); font-size: clamp(3.4rem, 9vw, 7rem); font-weight: 500; letter-spacing: -.07em; line-height: .85; }
+  .collection-heading > p:last-child { color: var(--ink-soft); font-size: 1.2rem; }
+  .photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
+  figure { margin: 0; overflow: hidden; background: #d8dfd4; border-radius: 1.5rem; }
+  figure:first-child { grid-column: 1 / -1; }
+  figure img { display: block; width: 100%; max-height: 42rem; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .5s ease; }
+  figure:first-child img { aspect-ratio: 16 / 8; }
+  figure:hover img { transform: scale(1.02); }
+  @media (max-width: 600px) { .photo-grid { grid-template-columns: 1fr; } figure:first-child { grid-column: auto; } figure:first-child img, figure img { aspect-ratio: 4 / 3; } }
+</style>
