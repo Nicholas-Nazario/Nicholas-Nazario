@@ -23,11 +23,72 @@ const { collection } = Astro.props;
   <section class="photo-grid" aria-label={`${collection.title} photographs`}>
     {collection.photos.map((photo, index) => (
       <figure>
-        <img src={photo} alt={`${collection.title} photograph ${index + 1}`} loading={index < 3 ? "eager" : "lazy"} />
+        <button class="photo-button" type="button" data-photo-index={index} aria-label={`View ${collection.title} photograph ${index + 1}`}>
+          <img src={photo} alt={`${collection.title} photograph ${index + 1}`} loading={index < 3 ? "eager" : "lazy"} />
+        </button>
       </figure>
     ))}
   </section>
+
+  <dialog id="photo-viewer" class="photo-viewer" data-photos={JSON.stringify(collection.photos)} aria-labelledby="viewer-label">
+    <div class="viewer-shell">
+      <div class="viewer-toolbar">
+        <p id="viewer-label">{collection.title}</p>
+        <span id="viewer-counter" aria-live="polite"></span>
+        <button id="viewer-close" class="viewer-close" type="button" aria-label="Close photo viewer">×</button>
+      </div>
+      <div class="viewer-stage">
+        <button id="viewer-previous" class="viewer-arrow" type="button" aria-label="Previous photo">←</button>
+        <img id="viewer-image" src={collection.photos[0]} alt="" />
+        <button id="viewer-next" class="viewer-arrow" type="button" aria-label="Next photo">→</button>
+      </div>
+    </div>
+  </dialog>
 </BaseLayout>
+
+<script>
+  const viewer = document.querySelector("#photo-viewer");
+  const viewerImage = document.querySelector("#viewer-image");
+  const viewerCounter = document.querySelector("#viewer-counter");
+  const closeButton = document.querySelector("#viewer-close");
+  const previousButton = document.querySelector("#viewer-previous");
+  const nextButton = document.querySelector("#viewer-next");
+
+  if (viewer instanceof HTMLDialogElement && viewerImage instanceof HTMLImageElement && viewerCounter instanceof HTMLElement && closeButton instanceof HTMLButtonElement && previousButton instanceof HTMLButtonElement && nextButton instanceof HTMLButtonElement) {
+    const photos = JSON.parse(viewer.dataset.photos || "[]");
+    let currentIndex = 0;
+
+    const showPhoto = (index: number) => {
+      currentIndex = (index + photos.length) % photos.length;
+      viewerImage.src = photos[currentIndex];
+      viewerImage.alt = `Photo ${currentIndex + 1} of ${photos.length}`;
+      viewerCounter.textContent = `${currentIndex + 1} / ${photos.length}`;
+      previousButton.disabled = photos.length < 2;
+      nextButton.disabled = photos.length < 2;
+    };
+
+    document.querySelectorAll<HTMLButtonElement>("[data-photo-index]").forEach((button) => {
+      button.addEventListener("click", () => {
+        currentIndex = Number(button.dataset.photoIndex || 0);
+        showPhoto(currentIndex);
+        viewer.showModal();
+      });
+    });
+
+    closeButton.addEventListener("click", () => viewer.close());
+    previousButton.addEventListener("click", () => showPhoto(currentIndex - 1));
+    nextButton.addEventListener("click", () => showPhoto(currentIndex + 1));
+    viewer.addEventListener("click", (event) => {
+      if (event.target === viewer) viewer.close();
+    });
+    viewer.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") showPhoto(currentIndex - 1);
+      if (event.key === "ArrowRight") showPhoto(currentIndex + 1);
+    });
+
+    showPhoto(0);
+  }
+</script>
 
 <style>
   .collection-heading { max-width: 52rem; padding-block: clamp(4rem, 10vw, 7rem) 3rem; }
@@ -39,8 +100,23 @@ const { collection } = Astro.props;
   .photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
   figure { margin: 0; overflow: hidden; background: #d8dfd4; border-radius: 1.5rem; }
   figure:first-child { grid-column: 1 / -1; }
+  .photo-button { display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in; }
   figure img { display: block; width: 100%; max-height: 42rem; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .5s ease; }
   figure:first-child img { aspect-ratio: 16 / 8; }
   figure:hover img { transform: scale(1.02); }
+  .photo-viewer { width: min(92vw, 72rem); max-width: none; padding: 0; color: var(--paper); background: var(--forest-deep); border: 0; border-radius: 1.4rem; box-shadow: 0 2rem 6rem rgba(25, 49, 40, .35); }
+  .photo-viewer::backdrop { background: rgba(25, 49, 40, .72); backdrop-filter: blur(5px); }
+  .viewer-shell { padding: .8rem; }
+  .viewer-toolbar { display: flex; align-items: center; gap: 1rem; padding: .2rem .5rem .8rem; }
+  .viewer-toolbar p { margin: 0 auto 0 0; font-family: "Chicle", "Trebuchet MS", sans-serif; font-size: 1.4rem; }
+  #viewer-counter { color: rgba(244, 238, 226, .7); font-size: .9rem; }
+  .viewer-close, .viewer-arrow { color: var(--paper); background: transparent; border: 1px solid rgba(244, 238, 226, .38); cursor: pointer; }
+  .viewer-close { width: 2rem; height: 2rem; padding: 0; border-radius: 50%; font-size: 1.5rem; line-height: 1; }
+  .viewer-stage { display: grid; grid-template-columns: 3rem minmax(0, 1fr) 3rem; align-items: center; gap: .5rem; }
+  .viewer-stage img { display: block; width: 100%; max-height: 76vh; object-fit: contain; }
+  .viewer-arrow { width: 2.5rem; height: 2.5rem; justify-self: center; border-radius: 50%; font-size: 1.3rem; }
+  .viewer-close:hover, .viewer-arrow:hover { background: var(--sea); border-color: var(--sea); }
+  .viewer-arrow:disabled { cursor: default; opacity: .35; }
   @media (max-width: 600px) { .photo-grid { grid-template-columns: 1fr; } figure:first-child { grid-column: auto; } figure:first-child img, figure img { aspect-ratio: 4 / 3; } }
+  @media (max-width: 520px) { .viewer-stage { grid-template-columns: 2.3rem minmax(0, 1fr) 2.3rem; gap: .2rem; } .viewer-arrow { width: 2rem; height: 2rem; } .viewer-shell { padding: .5rem; } }
 </style>
