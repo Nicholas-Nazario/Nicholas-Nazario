@@ -4,21 +4,53 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout title="Nicholas Nazario">
   <section class="hero">
-    <p class="eyebrow">Hi There 👋</p>
-    <p class="intro">
-      I’m a software engineer who likes birding, reading, cooking, and listening
-      to music.
-    </p>
-    <div class="links">
-      <a href="/blog">Read the blog →</a>
-      <a href="/photos">Browse the photos →</a>
+    <div class="hero-copy">
+      <h1>Hi There 👋</h1>
+      <p class="intro">
+        I’m a software engineer who likes birding, reading, cooking, and listening
+        to music.
+      </p>
+      <div class="links">
+        <a class="primary-link" href="/blog">Read the blog <span>→</span></a>
+        <a href="/photos">Browse the photos <span>→</span></a>
+      </div>
+    </div>
+    <div class="hero-art" aria-label="An abstract moon over a lush horizon" role="img">
+      <div class="moon"></div>
+      <div class="sun-glow"></div>
+      <div class="ridge ridge-back"></div>
+      <div class="ridge ridge-front"></div>
+      <div class="stem stem-left"><i></i><i></i><i></i></div>
+      <div class="stem stem-right"><i></i><i></i></div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hero { max-width: 48rem; padding-block: clamp(5rem, 15vw, 10rem); }
-  .eyebrow { color: #8d4b2d; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-  .intro { max-width: 38rem; color: #706a61; font-size: 1.25rem; }
-  .links { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2.5rem; font-weight: 700; }
+  .hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(18rem, .72fr); align-items: center; gap: clamp(2rem, 6vw, 7rem); min-height: min(42rem, calc(100vh - 7rem)); padding-block: clamp(4rem, 9vw, 7rem); }
+  .hero-copy { position: relative; z-index: 1; }
+  .eyebrow { color: #97603a; font-size: .9rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+  h1 { max-width: 38rem; margin: 1.1rem 0 1.5rem; color: var(--forest); font-size: clamp(3.8rem, 8vw, 7.5rem); font-weight: 500; letter-spacing: -.06em; line-height: .82; }
+  h1 em { color: var(--clay); font-weight: 500; }
+  .intro { max-width: 42rem; color: var(--ink-soft); font-size: clamp(1.45rem, 2.5vw, 2rem); line-height: 1.28; }
+  .links { display: flex; flex-wrap: wrap; align-items: center; gap: 1.6rem; margin-top: 2.5rem; font-size: 1.05rem; font-weight: 700; }
+  .links a { text-decoration: none; transition: color .7s ease, transform .7s ease; }
+  .links a:hover { color: var(--sea); transform: translateX(4px); }
+  .links span { margin-left: .35rem; color: var(--terracotta); }
+  .primary-link { padding: .9rem 1.15rem; color: var(--paper) !important; background: var(--forest); border-radius: 999px; }
+  .primary-link:hover { background: var(--sea); transform: translateY(-3px) !important; }
+  .hero-art { position: relative; width: min(100%, 34rem); min-height: clamp(20rem, 34vw, 27rem); justify-self: end; overflow: hidden; isolation: isolate; background: linear-gradient(165deg, #dce7d5, #b6cfb8 48%, #6e9a8e 100%); border-radius: 48% 52% 40% 60% / 49% 40% 60% 51%; box-shadow: 0 2rem 5rem rgba(38, 63, 52, .15); transform: rotate(3deg); animation: float 12s ease-in-out infinite alternate; }
+  .moon { position: absolute; z-index: 2; width: 7rem; height: 7rem; top: 13%; right: 19%; background: #f7d78c; border-radius: 50%; box-shadow: 0 0 0 1rem rgba(242, 177, 76, .12), 0 0 4rem rgba(242, 177, 76, .5); }
+  .sun-glow { position: absolute; inset: 0; background: radial-gradient(circle at 73% 27%, rgba(255, 233, 172, .38), transparent 18rem); }
+  .ridge { position: absolute; right: -15%; left: -15%; border-radius: 50% 50% 0 0; }
+  .ridge-back { bottom: 18%; height: 43%; background: #62866f; transform: rotate(-5deg); }
+  .ridge-front { bottom: -10%; height: 48%; background: var(--forest-deep); transform: rotate(7deg); }
+  .stem { position: absolute; z-index: 3; bottom: 17%; width: 1px; height: 8rem; background: #b6c56e; transform-origin: bottom; }
+  .stem-left { left: 18%; transform: rotate(-12deg); }
+  .stem-right { right: 16%; height: 6rem; transform: rotate(18deg); }
+  .stem i { position: absolute; width: 1.2rem; height: .6rem; border-radius: 100% 0; background: var(--moss); }
+  .stem i:nth-child(1) { top: 18%; left: -.9rem; transform: rotate(-22deg); } .stem i:nth-child(2) { top: 43%; left: .1rem; transform: rotate(30deg); } .stem i:nth-child(3) { top: 68%; left: -.9rem; transform: rotate(-22deg); }
+  .art-caption { position: absolute; z-index: 4; right: 2rem; bottom: 1.5rem; color: rgba(244, 238, 226, .75); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; }
+  @keyframes float { to { transform: rotate(1deg) translateY(-8px); } }
+  @media (max-width: 760px) { .hero { display: block; min-height: 0; } .hero-art { width: min(100%, 29rem); min-height: 21rem; margin: 4rem auto 0; } h1 { font-size: clamp(3.5rem, 16vw, 6rem); } .intro { font-size: 1.35rem; } }
 </style>

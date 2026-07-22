@@ -16,15 +16,23 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;600;700&family=Chicle&display=swap" rel="stylesheet" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
   </head>
   <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
     <header class="site-header">
-      <a class="site-name" href="/">Nicholas Nazario</a>
+      <a class="site-name" href="/">
+        <span class="site-mark" aria-hidden="true">✦</span>
+        <span>Nicholas Nazario</span>
+      </a>
       <nav aria-label="Main navigation">
-        <a href="/blog">Blog</a>
-        <a href="/photos">Photos</a>
+        <a href="/blog"><span>01</span> Blog</a>
+        <a href="/photos"><span>02</span> Photos</a>
       </nav>
     </header>
 
@@ -41,10 +49,19 @@ const {
 
 <style is:global>
   :root {
-    font-family: Georgia, "Times New Roman", serif;
-    color: #22201d;
-    background: #f7f4ee;
+    font-family: "Alegreya", Georgia, serif;
+    color: #26362d;
+    background: #f4eee2;
     font-synthesis: none;
+    --forest: #263f34;
+    --forest-deep: #193128;
+    --moss: #7f8a57;
+    --clay: #a04c4c;
+    --terracotta: #d67330;
+    --honey: #f2b14c;
+    --sea: #00709d;
+    --paper: #f4eee2;
+    --ink-soft: #647267;
   }
 
   * { box-sizing: border-box; }
@@ -52,14 +69,25 @@ const {
   body {
     margin: 0;
     min-width: 320px;
+    font-family: "Alegreya", Georgia, serif;
     line-height: 1.6;
+    overflow-x: hidden;
+    background:
+      radial-gradient(circle at 88% 10%, rgba(242, 177, 76, .16), transparent 24rem),
+      linear-gradient(135deg, #f8f2e8 0%, var(--paper) 48%, #e9eee1 100%);
   }
 
   a { color: inherit; }
 
+  h1, h2, .site-name { font-family: "Chicle", "Trebuchet MS", sans-serif; }
+
+  .ambient { position: fixed; z-index: -1; pointer-events: none; opacity: .34; }
+  .ambient-one { width: 26rem; height: 26rem; right: -14rem; top: 22rem; border: 1px solid rgba(0, 112, 157, .25); border-radius: 48% 52% 61% 39%; transform: rotate(32deg); animation: drift 18s ease-in-out infinite alternate; }
+  .ambient-two { width: 14rem; height: 14rem; left: -8rem; top: 7rem; border: 1px solid rgba(160, 76, 76, .22); border-radius: 52% 48% 37% 63%; animation: drift 22s ease-in-out infinite alternate-reverse; }
+
   .site-header,
   .site-footer {
-    width: min(100% - 3rem, 72rem);
+    width: min(100% - 4rem, 76rem);
     margin-inline: auto;
   }
 
@@ -68,32 +96,42 @@ const {
     justify-content: space-between;
     align-items: baseline;
     gap: 2rem;
-    padding-block: 1.5rem;
-    border-bottom: 1px solid #d8d0c4;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid rgba(38, 63, 52, .18);
   }
 
-  .site-name { font-weight: 700; text-decoration: none; }
+  .site-name { display: inline-flex; align-items: center; gap: .55rem; color: var(--forest); font-size: 1.5rem; font-weight: 400; letter-spacing: .01em; text-decoration: none; }
+  .site-mark { display: grid; width: 2rem; height: 2rem; place-items: center; color: var(--honey); background: var(--forest); border-radius: 50% 50% 50% 12%; font-family: sans-serif; font-size: .9rem; transform: rotate(-14deg); }
 
-  nav { display: flex; gap: 1.25rem; }
-  nav a { text-decoration: none; }
-  nav a:hover { text-decoration: underline; }
+  nav { display: flex; gap: .4rem; }
+  nav a { display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .8rem; color: var(--forest); font-size: .95rem; font-weight: 700; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; border-radius: 999px; transition: color .6s ease, background-color .6s ease, transform .6s ease; }
+  nav a span { color: var(--terracotta); font-size: .65rem; }
+  nav a:hover { color: var(--paper); background: var(--forest); transform: translateY(-2px); }
 
-  main { width: min(100% - 3rem, 72rem); margin-inline: auto; }
+  main { width: min(100% - 4rem, 76rem); margin-inline: auto; }
 
   .site-footer {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    margin-top: 6rem;
+    margin-top: 8rem;
     padding-block: 1.5rem;
-    border-top: 1px solid #d8d0c4;
-    color: #706a61;
+    border-top: 1px solid rgba(38, 63, 52, .18);
+    color: var(--ink-soft);
     font-size: 0.9rem;
   }
+
+  @keyframes drift { from { transform: translate3d(0, 0, 0) rotate(32deg); } to { transform: translate3d(-1.5rem, 1.2rem, 0) rotate(46deg); } }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
 
   @media (max-width: 600px) {
     .site-header,
     .site-footer,
-    main { width: min(100% - 2rem, 72rem); }
+    main { width: min(100% - 2rem, 76rem); }
+    .site-header { align-items: center; }
+    .site-name { font-size: 1.3rem; }
+    nav a { padding-inline: .45rem; }
+    nav a span { display: none; }
   }
 </style>

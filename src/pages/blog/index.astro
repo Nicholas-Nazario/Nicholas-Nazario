@@ -9,13 +9,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <p>Ramblings about mostly nothing. Every now and then, something.</p>
   </section>
 
-  <p class="empty-state">The first post is on its way.</p>
+  <div class="empty-state"><span class="leaf">✳</span><p>The first post is on its way.</p></div>
 </BaseLayout>
 
 <style>
-  .page-heading { padding-block: 5rem 2rem; }
-  .eyebrow { color: #8d4b2d; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-  h1 { margin: 0.5rem 0; font-size: clamp(3rem, 8vw, 6rem); line-height: 1; }
-  .page-heading p:last-child { color: #706a61; font-size: 1.2rem; }
-  .empty-state { padding: 2rem; border: 1px dashed #c9c0b4; color: #706a61; }
+  .page-heading { max-width: 50rem; padding-block: clamp(5rem, 12vw, 9rem) 3rem; }
+  .eyebrow { color: #97603a; font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  h1 { margin: .6rem 0 .8rem; color: var(--forest); font-size: clamp(4rem, 10vw, 8rem); font-weight: 500; letter-spacing: -.07em; line-height: .85; }
+  .page-heading p:last-child { color: var(--ink-soft); font-size: 1.2rem; }
+  .empty-state { display: flex; align-items: center; gap: 1.25rem; max-width: 46rem; padding: 2rem 2.25rem; color: var(--forest); background: rgba(127, 138, 87, .12); border: 1px solid rgba(127, 138, 87, .3); border-radius: 2rem 1rem 2rem 1rem; }
+  .empty-state p { margin: 0; font-size: 1.1rem; font-weight: 700; } .empty-state small { color: var(--ink-soft); } .leaf { color: var(--terracotta); font-size: 2rem; }
 </style>
