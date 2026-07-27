@@ -24,7 +24,7 @@ const photoUrl = (photo: string) => `${base}${photo}`;
         <div class="collection-art" aria-hidden="true">
           {birds.photos.length > 0 && (
             <div class="collection-collage">
-              {birds.photos.slice(0, 3).map((photo) => <img src={photoUrl(photo)} alt="" loading="lazy" />)}
+              {birds.photos.slice(0, 3).map((photo) => <img src={photoUrl(photo.src)} alt="" loading="lazy" />)}
             </div>
           )}
           <span class="sun"></span>
@@ -46,7 +46,7 @@ const photoUrl = (photo: string) => `${base}${photo}`;
         <div class="collection-art" aria-hidden="true">
           {argusC4.photos.length > 0 && (
             <div class="collection-collage">
-              {argusC4.photos.slice(0, 3).map((photo) => <img src={photoUrl(photo)} alt="" loading="lazy" />)}
+              {argusC4.photos.slice(0, 3).map((photo) => <img src={photoUrl(photo.src)} alt="" loading="lazy" />)}
             </div>
           )}
           <span class="skyline skyline-back"></span>
