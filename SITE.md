@@ -14,9 +14,14 @@ Build the production site with `npm run build`.
 
 ## Site structure
 
-- `/` — landing page
-- `/blog` — blog posts
-- `/photos` — photo collections
+The site is a React single-page application hosted inside one Astro-generated
+HTML shell. Client-side views use hash routes so direct links and refreshes work
+on GitHub Pages:
+
+- `#/` — landing view
+- `#/blog` — blog view
+- `#/photos` — photo collections
+- `#/photos/:collection` — collection gallery
 
 ## Licensing
 
