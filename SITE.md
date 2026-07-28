@@ -19,6 +19,7 @@ HTML shell. Client-side views use hash routes so direct links and refreshes work
 on GitHub Pages:
 
 - `#/` — landing view
+- `#/projects` — projects view
 - `#/blog` — blog view
 - `#/photos` — photo collections
 - `#/photos/:collection` — collection gallery

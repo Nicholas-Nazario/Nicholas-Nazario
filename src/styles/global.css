@@ -102,3 +102,8 @@ main { width: min(100% - 4rem, 76rem); margin-inline: auto; }
   .site-header nav a { padding-inline: .45rem; }
   .site-header nav a span { display: none; }
 }
+
+@media (max-width: 400px) {
+  .site-header { gap: .75rem; }
+  .site-name > span:last-child { display: none; }
+}

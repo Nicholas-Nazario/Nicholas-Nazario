@@ -8,7 +8,8 @@ import {
   useParams,
 } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { KeyboardEvent, MouseEvent } from "react";
+import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
+import avianVisitorsPreview from "../assets/images/projects/avian-visitors-ebird.png";
 import { photoCollections } from "../data/photoCollections";
 import type { Photo, PhotoCollection } from "../data/photoCollections";
 import "../styles/app.css";
@@ -21,7 +22,53 @@ interface ViewProps {
   base: string;
 }
 
-const defaultDescription = "A personal site for writing, photography, and ideas.";
+interface Project {
+  slug: string;
+  number: string;
+  title: string;
+  repoUrl: string;
+  siteUrl: string;
+  previewImage: string;
+  previewAlt: string;
+  previewWidth: number;
+  previewHeight: number;
+  description: ReactNode;
+}
+
+const defaultDescription = "A personal site for projects, writing, and photography.";
+
+const projects: Project[] = [
+  {
+    slug: "avian-visitors-ebird",
+    number: "01",
+    title: "Avian Visitors: eBird Edition",
+    repoUrl: "https://github.com/Nicholas-Nazario/AvianVisitors-eBird/tree/avian-visitors",
+    siteUrl: "https://avianvisitors-ebird.fly.dev/",
+    previewImage: avianVisitorsPreview.src,
+    previewAlt: "Avian Visitors showing recently observed birds near Central Park in a collage",
+    previewWidth: 2830,
+    previewHeight: 1540,
+    description: (
+      <>
+        This project is a fork of Teddy Warner&apos;s{" "}
+        <a href="https://theodore.net/projects/AvianVisitors/" target="_blank" rel="noopener noreferrer">
+          Avian Visitors
+        </a>{" "}
+        project, which relied on a Raspberry Pi and a mic to detect birds. I live in NYC and while
+        there are many birds to observe here, the main noises outside my window are car horns.
+        Instead, this fork uses{" "}
+        <a href="https://ebird.org/home" target="_blank" rel="noopener noreferrer">
+          CornellLab eBird
+        </a>{" "}
+        observation data to visualize birds near any lat/lon location or{" "}
+        <a href="https://ebird.org/region/US/hotspots" target="_blank" rel="noopener noreferrer">
+          hotspot
+        </a>
+        . Happy birding!
+      </>
+    ),
+  },
+];
 
 function assetUrl(base: string, path: string) {
   return `${base}${path}`;
@@ -36,7 +83,10 @@ function RouteEffects() {
     let title = "Nicholas Nazario";
     let description = defaultDescription;
 
-    if (location.pathname === "/blog") {
+    if (location.pathname === "/projects") {
+      title = "Projects · Nicholas Nazario";
+      description = "Things I’ve designed, built, and learned from along the way.";
+    } else if (location.pathname === "/blog") {
       title = "Blog · Nicholas Nazario";
       description = "Ramblings about mostly nothing. Every now and then, something.";
     } else if (location.pathname === "/photos") {
@@ -75,16 +125,19 @@ function RouteEffects() {
 function Header() {
   return (
     <header className="site-header">
-      <Link className="site-name" to="/">
+      <Link className="site-name" to="/" aria-label="Nicholas Nazario — Home">
         <span className="site-mark" aria-hidden="true">✦</span>
         <span>Nicholas Nazario</span>
       </Link>
       <nav aria-label="Main navigation">
+        <NavLink to="/projects" className={({ isActive }) => isActive ? "active" : undefined}>
+          <span>01</span> Projects
+        </NavLink>
         <NavLink to="/blog" className={({ isActive }) => isActive ? "active" : undefined}>
-          <span>01</span> Blog
+          <span>02</span> Blog
         </NavLink>
         <NavLink to="/photos" className={({ isActive }) => isActive ? "active" : undefined}>
-          <span>02</span> Photos
+          <span>03</span> Photos
         </NavLink>
       </nav>
     </header>
@@ -109,7 +162,8 @@ function HomeView() {
           I’m a software engineer who likes birding, reading, cooking, and listening to music.
         </p>
         <div className="hero-links">
-          <Link className="primary-link" to="/blog">Read the blog <span>→</span></Link>
+          <Link className="primary-link" to="/projects">View my projects <span>→</span></Link>
+          <Link to="/blog">Read the blog <span>→</span></Link>
           <Link to="/photos">Browse the photos <span>→</span></Link>
         </div>
       </div>
@@ -122,6 +176,83 @@ function HomeView() {
         <div className="stem stem-right"><i></i><i></i></div>
       </div>
     </section>
+  );
+}
+
+function ProjectsView() {
+  return (
+    <div className="route-view">
+      <section className="page-heading projects-heading">
+        <p className="eyebrow">Selected work</p>
+        <h1 data-route-heading tabIndex={-1}>Projects</h1>
+        <p>Things I’ve designed, built, and learned from along the way.</p>
+      </section>
+
+      <div className="projects-shell">
+        <aside className="projects-sidebar">
+          <details className="project-contents" open>
+            <summary>
+              <span>Project index</span>
+              <span className="contents-toggle" aria-hidden="true">⌄</span>
+            </summary>
+            <nav aria-label="Project table of contents">
+              <ol>
+                {projects.map((project) => (
+                  <li key={project.slug}>
+                    <Link to={`/projects?section=${project.slug}`}>
+                      <span>{project.number}</span>
+                      <strong>{project.title}</strong>
+                      <span aria-hidden="true">↓</span>
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </details>
+        </aside>
+
+        <div className="project-list">
+          {projects.map((project) => (
+            <section
+              className="project-section"
+              id={project.slug}
+              aria-labelledby={`${project.slug}-heading`}
+              tabIndex={-1}
+              key={project.slug}
+            >
+              <header className="project-header">
+                <p>Project {project.number}</p>
+                <h2 id={`${project.slug}-heading`}>{project.title}</h2>
+              </header>
+
+              <a className="project-preview" href={project.siteUrl} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={project.previewImage}
+                  alt={project.previewAlt}
+                  width={project.previewWidth}
+                  height={project.previewHeight}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="preview-visit">Open live site <span aria-hidden="true">↗</span></span>
+              </a>
+
+              <div className="project-copy">
+                <p className="project-description">{project.description}</p>
+                <div className="project-links">
+                  <a className="project-link-primary" href={project.siteUrl} target="_blank" rel="noopener noreferrer">
+                    Visit the site <span aria-hidden="true">↗</span>
+                  </a>
+                  <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                    View the repository <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -366,6 +497,7 @@ function RoutedApp({ base }: AppProps) {
         <div className="route-transition" key={`${location.pathname}${location.search}`}>
           <Routes location={location}>
             <Route path="/" element={<HomeView />} />
+            <Route path="/projects" element={<ProjectsView />} />
             <Route path="/blog" element={<BlogView />} />
             <Route path="/photos" element={<PhotosView base={base} />} />
             <Route path="/photos/:collection" element={<CollectionView base={base} />} />
