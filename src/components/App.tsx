@@ -10,6 +10,8 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
 import avianVisitorsPreview from "../assets/images/projects/avian-visitors-ebird.png";
+import backspinPreview from "../assets/images/projects/backspin.png";
+import empujonPreview from "../assets/images/projects/empujon.png";
 import { photoCollections } from "../data/photoCollections";
 import type { Photo, PhotoCollection } from "../data/photoCollections";
 import "../styles/app.css";
@@ -39,8 +41,45 @@ const defaultDescription = "A personal site for projects, writing, and photograp
 
 const projects: Project[] = [
   {
-    slug: "avian-visitors-ebird",
+    slug: "backspin",
     number: "01",
+    title: "Backspin",
+    repoUrl: "https://github.com/Nicholas-Nazario/backspin",
+    siteUrl: "https://backspin.fly.dev/",
+    previewImage: backspinPreview.src,
+    previewAlt: "Backspin’s Discover page with a vinyl record and the prompt to drop the needle",
+    previewWidth: 2392,
+    previewHeight: 1342,
+    description: (
+      <>
+        Backspin is a record recommendation app powered by your Discogs collection and Spotify listening data.
+        Let Backspin surprise you with the perfect pick from the records you own, narrow it down for
+        targeted recommendations, or simply browse your collection with ease.
+      </>
+    ),
+  },
+  {
+    slug: "empujon",
+    number: "02",
+    title: "Empujón",
+    repoUrl: "https://github.com/Nicholas-Nazario/empujon",
+    siteUrl: "https://empujon.fly.dev/",
+    previewImage: empujonPreview.src,
+    previewAlt: "Empujón project preview",
+    previewWidth: 2400,
+    previewHeight: 1260,
+    description: (
+      <>
+        A two-player abstract strategy game inspired by Scott Brady&apos;s <em>Gekitai</em> and <em>Gekitai 2</em>,
+        with original presentation. Play together on one device, invite a friend online, or choose a
+        computer opponent. Pick Classic or Upgrade mode, place pieces, and push neighboring pieces
+        to change the board.
+      </>
+    ),
+  },
+  {
+    slug: "avian-visitors-ebird",
+    number: "03",
     title: "Avian Visitors: eBird Edition",
     repoUrl: "https://github.com/Nicholas-Nazario/AvianVisitors-eBird/tree/avian-visitors",
     siteUrl: "https://avianvisitors-ebird.fly.dev/",
@@ -150,32 +189,6 @@ function Footer() {
       <p>© {new Date().getFullYear()} Nicholas Nazario</p>
       <Link to="/photos?section=license">Photo license</Link>
     </footer>
-  );
-}
-
-function HomeView() {
-  return (
-    <section className="hero route-view">
-      <div className="hero-copy">
-        <h1 data-route-heading tabIndex={-1}>Hi There 👋</h1>
-        <p className="intro">
-          I’m a software engineer who likes birding, reading, cooking, and listening to music.
-        </p>
-        <div className="hero-links">
-          <Link className="primary-link" to="/projects">View my projects <span>→</span></Link>
-          <Link to="/blog">Read the blog <span>→</span></Link>
-          <Link to="/photos">Browse the photos <span>→</span></Link>
-        </div>
-      </div>
-      <div className="hero-art" aria-label="An abstract moon over a lush horizon" role="img">
-        <div className="moon"></div>
-        <div className="sun-glow"></div>
-        <div className="ridge ridge-back"></div>
-        <div className="ridge ridge-front"></div>
-        <div className="stem stem-left"><i></i><i></i><i></i></div>
-        <div className="stem stem-right"><i></i><i></i></div>
-      </div>
-    </section>
   );
 }
 
@@ -496,7 +509,7 @@ function RoutedApp({ base }: AppProps) {
       <main id="main-content" tabIndex={-1}>
         <div className="route-transition" key={`${location.pathname}${location.search}`}>
           <Routes location={location}>
-            <Route path="/" element={<HomeView />} />
+            <Route path="/" element={<ProjectsView />} />
             <Route path="/projects" element={<ProjectsView />} />
             <Route path="/blog" element={<BlogView />} />
             <Route path="/photos" element={<PhotosView base={base} />} />
