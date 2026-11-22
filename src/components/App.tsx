@@ -13,6 +13,7 @@ import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
 import avianVisitorsPreview from "../assets/images/projects/avian-visitors-ebird.png";
 import backspinPreview from "../assets/images/projects/backspin.png";
 import empujonPreview from "../assets/images/projects/empujon.png";
+import ebirdIcon from "../assets/images/ebird.webp";
 import { photoCollections } from "../data/photoCollections";
 import type { Photo, PhotoCollection } from "../data/photoCollections";
 import "../styles/app.css";
@@ -214,6 +215,10 @@ function AboutView() {
         <a href="https://flic.kr/ps/48fF81" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="12" r="4" fill="#0063dc"/><circle cx="17" cy="12" r="4" fill="#ff0084"/></svg>
           <span className="social-copy"><strong>Flickr</strong><small>Photographs</small></span><span aria-hidden="true">↗</span>
+        </a>
+        <a href="https://ebird.org/profile/ODMxMjkyMw" target="_blank" rel="noopener noreferrer">
+          <img className="ebird-icon" src={ebirdIcon.src} alt="" />
+          <span className="social-copy"><strong>eBird</strong><small>Bird observations</small></span><span aria-hidden="true">↗</span>
         </a>
       </div>
     </section>
