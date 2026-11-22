@@ -26,8 +26,8 @@ interface ViewProps {
 
 interface Project {
   slug: string;
-  number: string;
   title: string;
+  tagline: string;
   repoUrl: string;
   siteUrl: string;
   previewImage: string;
@@ -42,8 +42,8 @@ const defaultDescription = "A personal site for projects, writing, and photograp
 const projects: Project[] = [
   {
     slug: "backspin",
-    number: "01",
     title: "Backspin",
+    tagline: "Less time choosing, more time listening.",
     repoUrl: "https://github.com/Nicholas-Nazario/backspin",
     siteUrl: "https://backspin.fly.dev/",
     previewImage: backspinPreview.src,
@@ -60,8 +60,8 @@ const projects: Project[] = [
   },
   {
     slug: "empujon",
-    number: "02",
     title: "Empujón",
+    tagline: "A two-player abstract strategy game.",
     repoUrl: "https://github.com/Nicholas-Nazario/empujon",
     siteUrl: "https://empujon.fly.dev/",
     previewImage: empujonPreview.src,
@@ -79,8 +79,8 @@ const projects: Project[] = [
   },
   {
     slug: "avian-visitors-ebird",
-    number: "03",
     title: "Avian Visitors: eBird Edition",
+    tagline: "A live bird collage powered by eBird observations.",
     repoUrl: "https://github.com/Nicholas-Nazario/AvianVisitors-eBird/tree/avian-visitors",
     siteUrl: "https://avianvisitors-ebird.fly.dev/",
     previewImage: avianVisitorsPreview.src,
@@ -122,9 +122,12 @@ function RouteEffects() {
     let title = "Nicholas Nazario";
     let description = defaultDescription;
 
-    if (location.pathname === "/projects") {
+    if (location.pathname === "/projects" || location.pathname === "/") {
       title = "Projects · Nicholas Nazario";
       description = "Things I’ve designed, built, and learned from along the way.";
+    } else if (location.pathname === "/about") {
+      title = "About · Nicholas Nazario";
+      description = "Software engineer, birder, reader, cook, and music listener.";
     } else if (location.pathname === "/blog") {
       title = "Blog · Nicholas Nazario";
       description = "Ramblings about mostly nothing. Every now and then, something.";
@@ -169,14 +172,11 @@ function Header() {
         <span>Nicholas Nazario</span>
       </Link>
       <nav aria-label="Main navigation">
-        <NavLink to="/projects" className={({ isActive }) => isActive ? "active" : undefined}>
-          <span>01</span> Projects
+        <NavLink to="/" end className={() => location.hash.startsWith("#/projects") || !location.hash || location.hash === "#/" ? "active" : undefined}>
+          Projects
         </NavLink>
-        <NavLink to="/blog" className={({ isActive }) => isActive ? "active" : undefined}>
-          <span>02</span> Blog
-        </NavLink>
-        <NavLink to="/photos" className={({ isActive }) => isActive ? "active" : undefined}>
-          <span>03</span> Photos
+        <NavLink to="/about" className={({ isActive }) => isActive ? "active" : undefined}>
+          About
         </NavLink>
       </nav>
     </header>
@@ -187,8 +187,27 @@ function Footer() {
   return (
     <footer className="site-footer">
       <p>© {new Date().getFullYear()} Nicholas Nazario</p>
-      <Link to="/photos?section=license">Photo license</Link>
     </footer>
+  );
+}
+
+function AboutView() {
+  return (
+    <section className="page-heading about-heading route-view">
+      <p className="eyebrow">A little about me</p>
+      <h1 data-route-heading tabIndex={-1}>About</h1>
+      <p>I’m Nicholas, a software engineer who likes birding, reading, cooking, and listening to music.</p>
+      <div className="about-socials" aria-label="Social links">
+        <a href="https://github.com/Nicholas-Nazario" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.76-.24.76-.53v-1.89c-3.1.67-3.75-1.31-3.75-1.31-.5-1.29-1.23-1.63-1.23-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15.99 1.7 2.6 1.21 3.24.92.1-.72.39-1.21.7-1.49-2.47-.28-5.07-1.23-5.07-5.49 0-1.21.43-2.2 1.14-2.97-.12-.28-.5-1.41.1-2.93 0 0 .93-.3 3.05 1.13a10.6 10.6 0 0 1 5.56 0c2.12-1.43 3.05-1.13 3.05-1.13.6 1.52.22 2.65.11 2.93.71.77 1.13 1.76 1.13 2.97 0 4.27-2.6 5.2-5.08 5.48.4.35.75 1.02.75 2.06V22c0 .29.2.64.77.53A11.1 11.1 0 0 0 12 .9Z"/></svg>
+          GitHub <span aria-hidden="true">↗</span>
+        </a>
+        <a href="https://flic.kr/ps/48fF81" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="12" r="4" fill="#0063dc"/><circle cx="17" cy="12" r="4" fill="#ff0084"/></svg>
+          Flickr <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
   );
 }
 
@@ -213,7 +232,6 @@ function ProjectsView() {
                 {projects.map((project) => (
                   <li key={project.slug}>
                     <Link to={`/projects?section=${project.slug}`}>
-                      <span>{project.number}</span>
                       <strong>{project.title}</strong>
                       <span aria-hidden="true">↓</span>
                     </Link>
@@ -234,8 +252,8 @@ function ProjectsView() {
               key={project.slug}
             >
               <header className="project-header">
-                <p>Project {project.number}</p>
                 <h2 id={`${project.slug}-heading`}>{project.title}</h2>
+                <p className="project-tagline">{project.tagline}</p>
               </header>
 
               <a className="project-preview" href={project.siteUrl} target="_blank" rel="noopener noreferrer">
@@ -511,6 +529,7 @@ function RoutedApp({ base }: AppProps) {
           <Routes location={location}>
             <Route path="/" element={<ProjectsView />} />
             <Route path="/projects" element={<ProjectsView />} />
+            <Route path="/about" element={<AboutView />} />
             <Route path="/blog" element={<BlogView />} />
             <Route path="/photos" element={<PhotosView base={base} />} />
             <Route path="/photos/:collection" element={<CollectionView base={base} />} />
