@@ -15,6 +15,7 @@
 .social-copy small { color: var(--ink-soft); font-size: .95rem; }
 .about-socials a:hover { background: rgba(98, 134, 111, .12); transform: translateY(-2px); }
 .about-socials svg { width: 1.4rem; height: 1.4rem; }
+.about-socials .ebird-icon { width: 1.6rem; height: 1.6rem; object-fit: contain; }
 .eyebrow { color: var(--terracotta); font-size: .95rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .page-heading h1,
 .collection-heading h1 { margin: .3rem 0 .5rem; color: var(--forest); font-size: clamp(2.5rem, 3.5vw, 3.25rem); font-weight: 500; letter-spacing: -.04em; line-height: 1; }
